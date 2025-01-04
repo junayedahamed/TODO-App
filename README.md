@@ -6,8 +6,8 @@ A new Flutter project.
 
 This todo apps will help you to make your life eisear .
 
-##Database
--Hive database(local)
+## Database
+- Hive database(local)
 
 ## Funtionalities
 
