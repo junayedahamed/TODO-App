@@ -4,13 +4,23 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This todo apps will help you to make your life eisear .
 
-A few resources to get you started if this is your first Flutter project:
+##Database
+-Hive database(local)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+##Funtionalities
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-Add task
+-Mark as done
+-Delete Task
+-Check previous todo History
+
+##History of Todo
+
+-Delete individual
+- Delete all functionalities
+
+
+
+

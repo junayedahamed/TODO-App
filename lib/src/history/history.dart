@@ -20,7 +20,10 @@ class _HistoryState extends State<History> {
     if (_history.get("TODOHIST") == null) {
       todohist.initialh();
     } else {
-      //  todohist.done = _history.get("TODOHIST");
+      todohist.done = _history.get("TODOHIST");
+      if (todohist.done.isEmpty) {
+        return;
+      }
       todohist.loadhist();
     }
     super.initState();
@@ -34,7 +37,15 @@ class _HistoryState extends State<History> {
     todohist.updatehis();
   }
 
+  // deleteAll() {
+  //   setState(() {
+  //     todohist.done.clear();
+  //   });
+  //   // todohist.updatehis();
+  // }
+
   void change(int value) async {
+    if (todohist.done.isEmpty) return; // Add null check
     setState(() {
       todohist.done[value][1] = !todohist.done[value][1];
     });
@@ -48,7 +59,7 @@ class _HistoryState extends State<History> {
 
     await Future.delayed(const Duration(seconds: 1));
     deletefDone(value);
-    tododb.updatedb();
+    // tododb.updatedb();
     todohist.updatehis();
   }
 
@@ -59,18 +70,32 @@ class _HistoryState extends State<History> {
       backgroundColor: Colors.deepPurple.shade300,
       body: CustomScrollView(
         slivers: <Widget>[
-          const SliverAppBar(
+          SliverAppBar(
             title: Text(
               "History",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    todohist.done.clear();
+                  });
+                  todohist.updatehis();
+                },
+                icon: Icon(
+                  Icons.delete_forever,
+                  color: Colors.black,
+                  size: 30,
+                ),
+              )
+            ],
             centerTitle: true,
             pinned: true,
             backgroundColor: Colors.deepPurple,
           ),
-          todohist.done.isEmpty
-              ? Text("Empty")
-              : SliverList.builder(
+          todohist.done.isNotEmpty
+              ? SliverList.builder(
                   itemCount: todohist.done.length,
                   itemBuilder: (context, index) => Padding(
                     padding:
@@ -82,12 +107,23 @@ class _HistoryState extends State<History> {
                       deletef: (val) => deletefDone(index),
                     ),
                   ),
+                )
+              : SliverToBoxAdapter(
+                  child: Center(
+                    child: Text(
+                      "No task completed yet",
+                      style: TextStyle(
+                        fontSize: 15,
+                        // color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          todohist.updatehis();
+          todohist.loadhist();
           //tododb.updatedb();
         },
         child: const Text(
