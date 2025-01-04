@@ -4,7 +4,8 @@ import 'package:todo/src/app.dart';
 
 void main() async {
   await Hive.initFlutter();
-  var mybox = await Hive.openBox("Task box");
+  await Hive.openBox("Task box");
+  await Hive.openBox("History");
 
   runApp(const MyApp());
 }

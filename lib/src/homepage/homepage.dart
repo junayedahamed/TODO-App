@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo/src/database/historydb.dart';
 import 'package:todo/src/database/todo_db.dart';
-
+import 'package:todo/src/history/history.dart';
 import 'package:todo/src/homepage/add_task.dart';
 import 'package:todo/src/listview_of_todo/todo_listview.dart';
 import 'package:todo/src/theme/change_theme.dart';
@@ -15,8 +16,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _mybox = Hive.box("Task box");
+  //final _history = Hive.box("History");
 
   TodoDb tododb = TodoDb();
+  TodoHist todoHist = TodoHist();
   ToggleSwitch cng = ToggleSwitch.instance;
   @override
   void initState() {
@@ -36,27 +39,47 @@ class _HomePageState extends State<HomePage> {
   deletef(index) {
     setState(() {
       tododb.todolist.removeAt(index);
-      //  tododb.
     });
     tododb.updatedb();
   }
 
-  void change(int value) {
+  void change(int value) async {
     setState(() {
       tododb.todolist[value][1] = !tododb.todolist[value][1];
     });
 
+    todoHist.done.add(
+      [
+        tododb.todolist[value][0],
+        tododb.todolist[value][1],
+      ],
+    );
+
+    print(todoHist.done);
+    await Future.delayed(const Duration(seconds: 1));
+    todoHist.updatehis();
     tododb.updatedb();
+
+    deletef(value);
   }
 
   @override
   Widget build(BuildContext context) {
-    //bool? value = true;
     return Scaffold(
       backgroundColor: Colors.deepPurple.shade300,
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const History(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.history),
+            ),
             title: const Text(
               "Todo",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -66,13 +89,14 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.deepPurple,
             actions: [
               ListenableBuilder(
-                  listenable: cng,
-                  builder: (context, snapshot) {
-                    return IconButton(
-                      onPressed: cng.changeTheme,
-                      icon: cng.themeIcon,
-                    );
-                  })
+                listenable: cng,
+                builder: (context, snapshot) {
+                  return IconButton(
+                    onPressed: cng.changeTheme,
+                    icon: cng.themeIcon,
+                  );
+                },
+              ),
             ],
           ),
           SliverList.builder(
