@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
 
-    print(todoHist.done);
     await Future.delayed(const Duration(seconds: 1));
     todoHist.updatehis();
     tododb.updatedb();
