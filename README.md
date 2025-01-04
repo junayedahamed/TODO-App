@@ -11,14 +11,14 @@ This todo apps will help you to make your life eisear .
 
 ## Funtionalities
 
--Add task
--Mark as done
--Delete Task
--Check previous todo History
+- Add task
+- Mark as done
+- Delete Task
+- Check previous todo History
 
 ## History of Todo
 
--Delete individual
+- Delete individual
 - Delete all functionalities
 
 
